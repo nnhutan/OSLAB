@@ -1,0 +1,10 @@
+1. Lý do là vì trong lần đầu tiên ta sẽ phải tạo file makefile. Khi ta có file makefile thì những lần biên dich tiếp theo sẽ tốn ít thời gian hơn vì chúng ta chỉ cần gọi chúng để biên dịch chương trình
+2. Có thể
+3. trong những trường hợp mà các source code nằm khác thư mục(p1, p2, p3,...) thì để viết Makefile thì đầu tiên mỗi thư mục chứa source code phải có các file makefile riêng.Còn với file makefile chung thì ta sẽ xây dựng với dạng như sau:
+	=========================
+	all:
+		+$(MAKE) -c p1
+		+$(MAKE) -c p2
+		+$(MAKE) -c p3
+		...
+	=========================
