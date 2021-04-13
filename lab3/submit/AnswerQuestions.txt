@@ -1,0 +1,15 @@
+Q1:
+Chương trình sẽ in ra: PARENT value = 5
+Giải thích:
+Khi lệnh fork() được gọi, một process (process cha) tạo ra một process mới (process con). Hàm fork() là một hàm đặc biệt sẽ trả về hai giá trị. Bên trong process con, hàm fork() sẽ trả về giá trị 0, bên trong process cha, hàm fork() trả về giá trị nguyên là PID của process con vừa tạo (> 0). Nếu không tách được process, hàm sẽ trả về -1. 
+Process cha và process con sẽ có các vùng nhớ khác nhau. Vì vậy khi (pid == 0) thì process con sẽ thực hiện value += 5, mà hoàn toàn không ảnh hưởng đến value ở process cha. Nên khi in giá trị value ở process cha, value vẫn giữ giá trị là 5.
+
+Q2:
+Đọan chương trình đó sẽ có 8 process được tạo.
+Với n fork() thì sẽ có 2^n process được tạo.
+
+Q3:
+C
+
+Q4:
+Để nhận biết  process.

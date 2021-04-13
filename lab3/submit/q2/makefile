@@ -4,3 +4,5 @@ q2.o: q2.c
 	gcc -c q2.c
 clean:
 	rm -f *.o q2
+run:
+	./q2
