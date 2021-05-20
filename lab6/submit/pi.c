@@ -4,7 +4,8 @@
 #include <time.h>
 
 long nPointforThread;
-long *count_point;
+long count_point = 0;
+pthread_mutex_t lock;
 
 void *generateRandomPoint(void *arg){
 	long pos = (long) arg;
@@ -15,7 +16,9 @@ void *generateRandomPoint(void *arg){
 		double point_y = -1.0+2.0*((double)rand_r(&state))/RAND_MAX;
 		if(point_x*point_x+point_y*point_y<=1) count++;	
 	}
-	count_point[pos]=count;
+	pthread_mutex_lock(&lock);
+	count_point+=count;
+	pthread_mutex_unlock(&lock);
 	pthread_exit(NULL);
 }
 
@@ -28,34 +31,30 @@ int main(int argc, char *argv[]){
 
 	pthread_attr_t attr;
 	pthread_attr_init(&attr);
+	pthread_mutex_init(&lock, NULL);
 
 	long nPoints=atol(argv[1]); 
 	if(nPoints<=0) fprintf(stderr, "The numbers of generrated point > 0\n");
 
-	long totalPointsinCircle = 0;
 	int N = 1; //Number threads
 	if(nPoints>=1000000) N = 8;
 	else if(nPoints >= 100000) N =2;
 	nPointforThread = nPoints/N;
-	count_point = malloc(N*sizeof(long));
 
 	clock_t start, end;
 	double time;
 	start = clock();
 
 	pthread_t *threads = malloc(N*sizeof(pthread_t));	
-
 	for(long i=0;i<N;i++){
 		pthread_create(&threads[i], &attr, generateRandomPoint, (void*)i);
 		pthread_join(threads[i],NULL);
-		totalPointsinCircle+=count_point[i];
 	}
 
-	free(count_point);
 	free(threads);
 
 	double pi;
-	pi=4.0*totalPointsinCircle/nPoints;
+	pi=4.0*count_point/nPoints;
 
 	end = clock();
 	time = (double)(end-start) / CLOCKS_PER_SEC;
@@ -66,3 +65,4 @@ int main(int argc, char *argv[]){
 	pthread_exit(NULL);
 	return 0;
 }
+
