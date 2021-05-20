@@ -1,4 +1,4 @@
-all: pi.c
-	gcc -o pi pi.c -pthread
+all: pi_multi_thread.c
+	gcc -o pi_multi_thread pi_multi_thread.c -pthread
 clean:
-	rm -f pi
+	rm -f pi_multi_thread
